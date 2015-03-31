@@ -1,0 +1,453 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>API &mdash; Ogre Toolkit 0.1 documentation</title>
+    
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="Ogre Toolkit 0.1 documentation" href="index.html" />
+    <link rel="prev" title="Welcome to the Ogre Toolkit Documentation!" href="index.html" />
+   
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9">
+
+  </head>
+  <body role="document">
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="index.html" title="Welcome to the Ogre Toolkit Documentation!"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">Ogre Toolkit 0.1 documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="api">
+<h1>API<a class="headerlink" href="#api" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="module-ogre.repository">
+<span id="repository"></span><h2>Repository<a class="headerlink" href="#module-ogre.repository" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="ogre.repository.Item">
+<em class="property">class </em><code class="descclassname">ogre.repository.</code><code class="descname">Item</code><span class="sig-paren">(</span><em>id</em>, <em>directory</em><span class="sig-paren">)</span><a class="headerlink" href="#ogre.repository.Item" title="Permalink to this definition">¶</a></dt>
+<dd><p>An item in a repository.</p>
+<p>An <code class="docutils literal"><span class="pre">Item</span></code> provides access to the underlying metadata files for an
+item in a <a class="reference internal" href="#ogre.repository.Repository" title="ogre.repository.Repository"><code class="xref py py-class docutils literal"><span class="pre">Repository</span></code></a>. Different files are
+accessed as properties that return a path to the file:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">ogre.repository</span> <span class="kn">import</span> <span class="n">Item</span>
+
+<span class="n">item</span> <span class="o">=</span> <span class="n">Item</span><span class="p">(</span><span class="s">&#39;id_1&#39;</span><span class="p">,</span> <span class="s">&#39;path/to/repo&#39;</span><span class="p">)</span>
+<span class="n">item</span><span class="o">.</span><span class="n">id</span> <span class="c"># &#39;id_1&#39;</span>
+<span class="n">item</span><span class="o">.</span><span class="n">fgdc</span> <span class="c"># &#39;path/to/repo/id_1/fgdc.xml&#39;</span>
+</pre></div>
+</div>
+<p>Usually, items are obtained by iterating over a
+<a class="reference internal" href="#ogre.repository.Repository" title="ogre.repository.Repository"><code class="xref py py-class docutils literal"><span class="pre">Repository</span></code></a> object.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>id</strong> &#8211; item id</li>
+<li><strong>directory</strong> &#8211; directory of repository</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="class">
+<dt id="ogre.repository.Repository">
+<em class="property">class </em><code class="descclassname">ogre.repository.</code><code class="descname">Repository</code><span class="sig-paren">(</span><em>path</em>, <em>remote</em>, <em>catalog_file='layers.json'</em><span class="sig-paren">)</span><a class="headerlink" href="#ogre.repository.Repository" title="Permalink to this definition">¶</a></dt>
+<dd><p>An object representing an OpenGeoMetadata repository.</p>
+<p>A <code class="docutils literal"><span class="pre">Repository</span></code> creates a local clone of a repo. If the local repo
+already exists, it will attempt to do a <code class="docutils literal"><span class="pre">git</span> <span class="pre">pull</span></code>. It can be iterated
+over to produce <a class="reference internal" href="#ogre.repository.Item" title="ogre.repository.Item"><code class="xref py py-class docutils literal"><span class="pre">Item</span></code></a>s:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">ogre.repository</span> <span class="kn">import</span> <span class="n">Repository</span>
+
+<span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">Repository</span><span class="p">(</span><span class="s">&#39;path/to/local&#39;</span><span class="p">,</span> <span class="s">&#39;path/to/remote&#39;</span><span class="p">):</span>
+    <span class="k">print</span> <span class="n">item</span><span class="o">.</span><span class="n">id</span>
+</pre></div>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>path</strong> &#8211; path to local repo</li>
+<li><strong>remote</strong> &#8211; path to remote repo to clone</li>
+<li><strong>catalog_file</strong> &#8211; name of catalog file in repo</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<dl class="attribute">
+<dt id="ogre.repository.Repository.catalog">
+<code class="descname">catalog</code><em class="property"> = None</em><a class="headerlink" href="#ogre.repository.Repository.catalog" title="Permalink to this definition">¶</a></dt>
+<dd><p>Repository catalog in dictionary format</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="ogre.repository.Repository.commit">
+<code class="descname">commit</code><span class="sig-paren">(</span><em>message</em><span class="sig-paren">)</span><a class="headerlink" href="#ogre.repository.Repository.commit" title="Permalink to this definition">¶</a></dt>
+<dd><p>Perform <code class="docutils literal"><span class="pre">git</span> <span class="pre">commit</span></code> of repository.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>message</strong> &#8211; commit message</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="ogre.repository.Repository.find">
+<code class="descname">find</code><span class="sig-paren">(</span><em>id</em><span class="sig-paren">)</span><a class="headerlink" href="#ogre.repository.Repository.find" title="Permalink to this definition">¶</a></dt>
+<dd><p>Find an <a class="reference internal" href="#ogre.repository.Item" title="ogre.repository.Item"><code class="xref py py-class docutils literal"><span class="pre">Item</span></code></a> in the repository by id.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="ogre.repository.Repository.update">
+<code class="descname">update</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#ogre.repository.Repository.update" title="Permalink to this definition">¶</a></dt>
+<dd><p>Perform <code class="docutils literal"><span class="pre">git</span> <span class="pre">pull</span></code> of repository.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="ogre.repository.load_catalog">
+<code class="descclassname">ogre.repository.</code><code class="descname">load_catalog</code><span class="sig-paren">(</span><em>path</em><span class="sig-paren">)</span><a class="headerlink" href="#ogre.repository.load_catalog" title="Permalink to this definition">¶</a></dt>
+<dd><p>Load the JSON catalog file.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>path</strong> &#8211; path to JSON catalog file</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="record">
+<h2>Record<a class="headerlink" href="#record" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="ogre.record.Record">
+<em class="property">class </em><code class="descclassname">ogre.record.</code><code class="descname">Record</code><span class="sig-paren">(</span><em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#ogre.record.Record" title="Permalink to this definition">¶</a></dt>
+<dd><p>Defines a GeoBlacklight record.</p>
+<p>A record&#8217;s fields (see <a class="reference external" href="https://github.com/geoblacklight/geoblacklight-schema">https://github.com/geoblacklight/geoblacklight-schema</a>)
+can be initialized through keyword arguments or set later:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">ogre.record</span> <span class="kn">import</span> <span class="n">Record</span>
+
+<span class="n">record</span> <span class="o">=</span> <span class="n">Record</span><span class="p">(</span><span class="n">dc_title_s</span><span class="o">=</span><span class="s">u&#39;Cambridge Libraries&#39;</span><span class="p">)</span>
+<span class="n">record</span><span class="o">.</span><span class="n">dct_provenance_s</span> <span class="o">=</span> <span class="s">u&#39;MIT&#39;</span>
+</pre></div>
+</div>
+<p>This class can be easily subclassed to create a specific kind of record:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">ogre.record</span> <span class="kn">import</span> <span class="n">Record</span>
+<span class="kn">from</span> <span class="nn">ogre.fields</span> <span class="kn">import</span> <span class="n">String</span><span class="p">,</span> <span class="n">Enum</span>
+
+<span class="k">class</span> <span class="nc">MitRecord</span><span class="p">(</span><span class="n">Record</span><span class="p">):</span>
+    <span class="n">dct_provenance_s</span> <span class="o">=</span> <span class="n">String</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="s">u&#39;MIT&#39;</span><span class="p">)</span>
+    <span class="n">dc_rights_s</span> <span class="o">=</span> <span class="n">Enum</span><span class="p">(</span><span class="n">enums</span><span class="o">=</span><span class="p">[</span><span class="s">u&#39;Public&#39;</span><span class="p">,</span> <span class="s">u&#39;Restricted&#39;</span><span class="p">],</span>
+                       <span class="n">default</span><span class="o">=</span><span class="s">u&#39;Restricted&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>kwargs</strong> &#8211; initial field values</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="ogre.record.Record.as_dict">
+<code class="descname">as_dict</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#ogre.record.Record.as_dict" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return record as a dictionary.</p>
+<p>This dictionary will contain only fields present in the current
+version of the GeoBlacklight schema.</p>
+<p>The <code class="docutils literal"><span class="pre">dct_references_s</span></code> field, if not <code class="docutils literal"><span class="pre">None</span></code>, will be
+represented as a valid JSON string.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">dictionary</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-ogre.fields">
+<span id="fields"></span><h2>Fields<a class="headerlink" href="#module-ogre.fields" title="Permalink to this headline">¶</a></h2>
+<p>The Ogre Toolkit provides a declarative API for defining a
+<a class="reference internal" href="#ogre.record.Record" title="ogre.record.Record"><code class="xref py py-class docutils literal"><span class="pre">Record</span></code></a>. Use the fields documented here to
+create new kinds of records.</p>
+<dl class="class">
+<dt id="ogre.fields.Default">
+<em class="property">class </em><code class="descclassname">ogre.fields.</code><code class="descname">Default</code><span class="sig-paren">(</span><em>default=None</em><span class="sig-paren">)</span><a class="headerlink" href="#ogre.fields.Default" title="Permalink to this definition">¶</a></dt>
+<dd><p>A field type mixin that supports default values.</p>
+<p>Fields using this can define a default value:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">ogre.record</span> <span class="kn">import</span> <span class="n">Record</span>
+<span class="kn">from</span> <span class="nn">ogre.fields</span> <span class="kn">import</span> <span class="n">Default</span>
+
+<span class="k">class</span> <span class="nc">MyField</span><span class="p">(</span><span class="n">Default</span><span class="p">):</span>
+    <span class="k">pass</span>
+
+<span class="k">class</span> <span class="nc">MyRecord</span><span class="p">(</span><span class="n">Record</span><span class="p">):</span>
+    <span class="n">default_field</span> <span class="o">=</span> <span class="n">MyField</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="s">&#39;Is this dress blue and black?&#39;</span><span class="p">)</span>
+
+<span class="n">record</span> <span class="o">=</span> <span class="n">MyRecord</span><span class="p">()</span>
+<span class="n">record</span><span class="o">.</span><span class="n">default_field</span> <span class="c"># &#39;Is this dress blue and black?&#39;</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="class">
+<dt id="ogre.fields.String">
+<em class="property">class </em><code class="descclassname">ogre.fields.</code><code class="descname">String</code><span class="sig-paren">(</span><em>strip_ws=True</em><span class="sig-paren">)</span><a class="headerlink" href="#ogre.fields.String" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">ogre.fields.Descriptor</span></code>, <a class="reference internal" href="#ogre.fields.Default" title="ogre.fields.Default"><code class="xref py py-class docutils literal"><span class="pre">ogre.fields.Default</span></code></a></p>
+<p>A string field type.</p>
+<p>By default, white space will be removed from the beginning and end
+of the string. Set <code class="docutils literal"><span class="pre">strip_ws</span></code> to <code class="docutils literal"><span class="pre">False</span></code> to disable this behavior.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>strip_ws</strong> &#8211; remove white space from string, default is <code class="docutils literal"><span class="pre">True</span></code></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="class">
+<dt id="ogre.fields.Decimal">
+<em class="property">class </em><code class="descclassname">ogre.fields.</code><code class="descname">Decimal</code><a class="headerlink" href="#ogre.fields.Decimal" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">ogre.fields.Descriptor</span></code>, <a class="reference internal" href="#ogre.fields.Default" title="ogre.fields.Default"><code class="xref py py-class docutils literal"><span class="pre">ogre.fields.Default</span></code></a></p>
+<p>A decimal field type.</p>
+<p>Calls <code class="docutils literal"><span class="pre">decimal.Decimal()</span></code> on any value being set.</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="ogre.fields.Integer">
+<em class="property">class </em><code class="descclassname">ogre.fields.</code><code class="descname">Integer</code><a class="headerlink" href="#ogre.fields.Integer" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">ogre.fields.Descriptor</span></code>, <a class="reference internal" href="#ogre.fields.Default" title="ogre.fields.Default"><code class="xref py py-class docutils literal"><span class="pre">ogre.fields.Default</span></code></a></p>
+<p>An integer field type.</p>
+<p>Calls <code class="docutils literal"><span class="pre">int()</span></code> on any value being set.</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="ogre.fields.DateTime">
+<em class="property">class </em><code class="descclassname">ogre.fields.</code><code class="descname">DateTime</code><a class="headerlink" href="#ogre.fields.DateTime" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">ogre.fields.Descriptor</span></code>, <a class="reference internal" href="#ogre.fields.Default" title="ogre.fields.Default"><code class="xref py py-class docutils literal"><span class="pre">ogre.fields.Default</span></code></a></p>
+<p>An <a class="reference external" href="https://github.com/crsmithdev/arrow">arrow</a> datetime field.</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="ogre.fields.Set">
+<em class="property">class </em><code class="descclassname">ogre.fields.</code><code class="descname">Set</code><a class="headerlink" href="#ogre.fields.Set" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">ogre.fields.Descriptor</span></code></p>
+<p>A <code class="docutils literal"><span class="pre">set</span></code> field type.</p>
+<p>Example usage:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">ogre.record</span> <span class="kn">import</span> <span class="n">Record</span>
+
+<span class="n">record</span> <span class="o">=</span> <span class="n">Record</span><span class="p">()</span>
+<span class="n">record</span><span class="o">.</span><span class="n">dct_spatial_sm</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="s">&quot;Boston&quot;</span><span class="p">)</span>
+<span class="n">record</span><span class="o">.</span><span class="n">dct_spatial_sm</span><span class="o">.</span><span class="n">update</span><span class="p">([</span><span class="s">&quot;Cambridge&quot;</span><span class="p">,</span> <span class="s">&quot;Boston&quot;</span><span class="p">])</span>
+<span class="n">record</span><span class="o">.</span><span class="n">dct_spatial_sm</span> <span class="c"># set([&quot;Boston&quot;, &quot;Cambridge&quot;])</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="class">
+<dt id="ogre.fields.Enum">
+<em class="property">class </em><code class="descclassname">ogre.fields.</code><code class="descname">Enum</code><span class="sig-paren">(</span><em>enums</em>, <em>mapper=lambda x: x</em><span class="sig-paren">)</span><a class="headerlink" href="#ogre.fields.Enum" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">ogre.fields.Descriptor</span></code>, <a class="reference internal" href="#ogre.fields.Default" title="ogre.fields.Default"><code class="xref py py-class docutils literal"><span class="pre">ogre.fields.Default</span></code></a></p>
+<p>Enumerable field type.</p>
+<p>This defines a field that accepts values from a predetermined list.
+A mapper function can be passed that is called on the value being
+set right before it is set. For example:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">ogre.record</span> <span class="kn">import</span> <span class="n">Record</span>
+<span class="kn">from</span> <span class="nn">ogre.fields</span> <span class="kn">import</span> <span class="n">Enum</span>
+
+<span class="k">class</span> <span class="nc">MyRecord</span><span class="p">(</span><span class="n">Record</span><span class="p">):</span>
+    <span class="n">places</span> <span class="o">=</span> <span class="n">Enum</span><span class="p">(</span><span class="n">enums</span><span class="o">=</span><span class="p">[</span><span class="s">&#39;MFA&#39;</span><span class="p">,</span> <span class="s">&#39;MOBA&#39;</span><span class="p">],</span> <span class="n">mapper</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="o">.</span><span class="n">upper</span><span class="p">())</span>
+
+<span class="n">record</span> <span class="o">=</span> <span class="n">MyRecord</span><span class="p">(</span><span class="n">places</span><span class="o">=</span><span class="s">&#39;moba&#39;</span><span class="p">)</span>
+<span class="n">record</span><span class="o">.</span><span class="n">places</span> <span class="c"># MOBA</span>
+</pre></div>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>enums</strong> &#8211; list of valid values</li>
+<li><strong>mapper</strong> &#8211; mapper function</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="class">
+<dt id="ogre.fields.Dictionary">
+<em class="property">class </em><code class="descclassname">ogre.fields.</code><code class="descname">Dictionary</code><a class="headerlink" href="#ogre.fields.Dictionary" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">ogre.fields.Descriptor</span></code></p>
+<p>A <code class="docutils literal"><span class="pre">dict</span></code> field type.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-ogre.xml">
+<span id="xml-parsers"></span><h2>XML Parsers<a class="headerlink" href="#module-ogre.xml" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="ogre.xml.FGDCParser">
+<em class="property">class </em><code class="descclassname">ogre.xml.</code><code class="descname">FGDCParser</code><a class="headerlink" href="#ogre.xml.FGDCParser" title="Permalink to this definition">¶</a></dt>
+<dd><p>An FGDC XML parser.</p>
+<dl class="method">
+<dt id="ogre.xml.FGDCParser.end_handler">
+<code class="descname">end_handler</code><span class="sig-paren">(</span><em>elem</em><span class="sig-paren">)</span><a class="headerlink" href="#ogre.xml.FGDCParser.end_handler" title="Permalink to this definition">¶</a></dt>
+<dd><p>End handler called when encountering the end of an element.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="ogre.xml.FGDCParser.record">
+<code class="descname">record</code><em class="property"> = None</em><a class="headerlink" href="#ogre.xml.FGDCParser.record" title="Permalink to this definition">¶</a></dt>
+<dd><p>Parsed GeoBlacklight record</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="ogre.xml.FGDCParser.start_handler">
+<code class="descname">start_handler</code><span class="sig-paren">(</span><em>elem</em><span class="sig-paren">)</span><a class="headerlink" href="#ogre.xml.FGDCParser.start_handler" title="Permalink to this definition">¶</a></dt>
+<dd><p>Start handler called when encountering a new element.</p>
+<p>No-op.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="ogre.xml.parse">
+<code class="descclassname">ogre.xml.</code><code class="descname">parse</code><span class="sig-paren">(</span><em>fp</em>, <em>parser</em><span class="sig-paren">)</span><a class="headerlink" href="#ogre.xml.parse" title="Permalink to this definition">¶</a></dt>
+<dd><p>Parse XML data using the specified parser.</p>
+<p>A parser class must implement at least two methods,
+<code class="docutils literal"><span class="pre">start_handler</span></code> and <code class="docutils literal"><span class="pre">end_handler</span></code>, which accept an <code class="docutils literal"><span class="pre">Element</span></code>.
+These methods must populate an instance property <code class="docutils literal"><span class="pre">record</span></code> which is
+returned when parsing is complete.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>source</strong> &#8211; file name or file pointer containing XML data</li>
+<li><strong>parser</strong> &#8211; parser class to use for parsing</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">Ogre Toolkit</a></h1>
+
+
+
+
+
+<p>
+<iframe src="https://ghbtns.com/github-btn.html?user=MITLibraries&repo=ogre-toolkit&type=watch&count=true&size=large"
+  allowtransparency="true" frameborder="0" scrolling="0" width="200px" height="35px"></iframe>
+</p>
+
+
+<h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="">API</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#module-ogre.repository">Repository</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#record">Record</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-ogre.fields">Fields</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-ogre.xml">XML Parsers</a></li>
+</ul>
+</li>
+</ul>
+
+
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2015, MIT Libraries.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.3</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.2</a>
+      
+      |
+      <a href="_sources/api.txt"
+          rel="nofollow">Page source</a></li>
+    </div>
+
+    
+
+    
+  </body>
+</html>
