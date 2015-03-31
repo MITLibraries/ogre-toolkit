@@ -3,6 +3,8 @@ Ogre Toolkit
 
 The Ogre Toolkit is an API for working with `OpenGeoMetadata <https://github.com/OpenGeoMetadata>`_ repositories.
 
+See the documentation at https://mitlibraries.github.io/ogre-toolkit/
+
 
 Install
 -------
