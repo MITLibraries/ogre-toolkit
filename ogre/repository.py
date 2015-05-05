@@ -37,6 +37,8 @@ class Item(object):
     """
 
     fgdc = FileProperty('fgdc', 'fgdc.xml')
+    solr_json = FileProperty('solr_json', 'geoblacklight.json')
+    solr_xml = FileProperty('solr_xml', 'geoblacklight.xml')
 
     def __init__(self, id, directory):
         self.id = id
