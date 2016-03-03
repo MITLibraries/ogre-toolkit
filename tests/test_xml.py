@@ -26,6 +26,12 @@ class ParseTestCase(unittest.TestCase):
 
 
 class FgdcParserTestCase(unittest.TestCase):
+    def test_parser_skips_empty_elements(self):
+        record = parse(
+            io.BytesIO(u'<metadata><title/></metadata>'.encode('utf-8')),
+            FGDCParser)
+        assert 'dc_title_s' not in record
+
     def testParserReturnsThemeKeywordsAsSet(self):
         record = parse(io.open('tests/fixtures/repo/foo/bar/fgdc.xml', 'rb'),
                        FGDCParser)
