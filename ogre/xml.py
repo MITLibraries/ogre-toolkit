@@ -48,30 +48,30 @@ class FGDCParser(object):
     def end_handler(self, elem):
         """End handler called when encountering the end of an element."""
 
-        if elem.tag == 'title':
+        if elem.tag == 'title' and elem.text:
             self.record['dc_title_s'] = elem.text
-        elif elem.tag == 'origin':
+        elif elem.tag == 'origin' and elem.text:
             self.record.setdefault('dc_creator_sm', set()).add(elem.text)
-        elif elem.tag == 'abstract':
+        elif elem.tag == 'abstract' and elem.text:
             self.record['dc_description_s'] = elem.text
-        elif elem.tag == 'publish':
+        elif elem.tag == 'publish' and elem.text:
             self.record['dc_publisher_s'] = elem.text
-        elif elem.tag == 'westbc':
+        elif elem.tag == 'westbc' and elem.text:
             self.record['_bbox_w'] = elem.text
-        elif elem.tag == 'eastbc':
+        elif elem.tag == 'eastbc' and elem.text:
             self.record['_bbox_e'] = elem.text
-        elif elem.tag == 'northbc':
+        elif elem.tag == 'northbc' and elem.text:
             self.record['_bbox_n'] = elem.text
-        elif elem.tag == 'southbc':
+        elif elem.tag == 'southbc' and elem.text:
             self.record['_bbox_s'] = elem.text
-        elif elem.tag == 'accconst':
+        elif elem.tag == 'accconst' and elem.text:
             self.record['dc_rights_s'] = elem.text
-        elif elem.tag == 'themekey':
+        elif elem.tag == 'themekey' and elem.text:
             self.record.setdefault('dc_subject_sm', set()).add(elem.text)
-        elif elem.tag == 'placekey':
+        elif elem.tag == 'placekey' and elem.text:
             self.record.setdefault('dct_spatial_sm', set()).add(elem.text)
-        elif elem.tag == 'direct':
+        elif elem.tag == 'direct' and elem.text:
             if elem.text.lower() == 'raster':
                 self.record['layer_geom_type_s'] = elem.text
-        elif elem.tag == 'sdtstype':
+        elif elem.tag == 'sdtstype' and elem.text:
             self.record['layer_geom_type_s'] = elem.text
