@@ -4,5 +4,6 @@ build
 .cache
 .coverage
 .tox
+*.pyc
 
 docs/_build
