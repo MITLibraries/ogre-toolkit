@@ -10,7 +10,7 @@ with io.open('LICENSE') as f:
 
 setup(
     name='Ogre-Toolkit',
-    version='0.2.0',
+    version='0.2.1',
     description='Work with OpenGeoMetadata repositories',
     long_description=readme,
     url='https://github.com/MITLibraries/ogre-toolkit.git',
