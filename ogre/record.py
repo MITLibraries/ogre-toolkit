@@ -147,7 +147,7 @@ class Record(object):
             'dct_isPartOf_sm': list(self.dct_isPartOf_sm or []),
             'dct_issued_dt': self.dct_issued_dt,
             'dct_provenance_s': self.dct_provenance_s,
-            'dct_references_s': self.dct_references_s,
+            'dct_references_s': json.dumps(self.dct_references_s),
             'dct_spatial_sm': list(self.dct_spatial_sm or []),
             'dct_temporal_sm': list(self.dct_temporal_sm or []),
             'geoblacklight_version': self.geoblacklight_version,

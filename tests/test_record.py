@@ -32,3 +32,10 @@ def testSolrGeomConstructsGeomString():
 def testSetFieldRemovesDuplicates():
     r = Record(dc_creator_sm=['Bubbles', 'Bubbles'])
     assert r.dc_creator_sm == set(['Bubbles'])
+
+
+def test_to_json_converts_references_to_json_string():
+    r = Record(dc_rights_s='Public', layer_geom_type_s='Point',
+               layer_id_s='foo:bar', solr_geom=(1,2,3,4))
+    r.dct_references_s = {'foo': 'bar'}
+    assert '"dct_references_s": "{\\"foo\\": \\"bar\\"}"' in r.to_json()
