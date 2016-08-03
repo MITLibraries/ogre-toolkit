@@ -37,7 +37,7 @@ class Record(object):
         return self._dc_format_s
 
     @dc_format_s.setter
-    @Enum('Shapefile', 'GeoTiff', 'ArcGRID')
+    @Enum('Shapefile', 'GeoTIFF', 'ArcGRID')
     def dc_format_s(self, value):
         self._dc_format_s = value
 
