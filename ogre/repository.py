@@ -1,18 +1,22 @@
 # -*- coding: utf-8 -*-
 from __future__ import absolute_import
-import io
-import os.path
+import fnmatch
 import json
+import io
+import os
+import os.path
+
 import git
 
 
 class FileProperty(object):
-    def __init__(self, name, filename):
-        self.name = name
+    def __init__(self, filename):
         self.filename = filename
 
     def __get__(self, instance, cls):
-        return os.path.join(instance.directory, self.filename)
+        fpath = os.path.join(instance.directory, self.filename)
+        if os.path.isfile(fpath):
+            return fpath
 
 
 class Item(object):
@@ -36,24 +40,19 @@ class Item(object):
     :param directory: directory of repository
     """
 
-    fgdc = FileProperty('fgdc', 'fgdc.xml')
-    solr_json = FileProperty('solr_json', 'geoblacklight.json')
-    solr_xml = FileProperty('solr_xml', 'geoblacklight.xml')
+    fgdc = FileProperty('fgdc.xml')
+    gbl_json = FileProperty('geoblacklight.json')
 
-    def __init__(self, id, directory):
-        self.id = id
+    def __init__(self, directory):
         self.directory = directory
+        self._record = None
 
-
-def load_catalog(path):
-    """
-    Load the JSON catalog file.
-
-    :param path: path to JSON catalog file
-    """
-
-    with io.open(path) as fp:
-        return json.load(fp)
+    @property
+    def record(self):
+        if self._record is None:
+            with io.open(self.gbl_json) as fp:
+                self._record = json.load(fp)
+        return self._record
 
 
 class Repository(object):
@@ -74,19 +73,18 @@ class Repository(object):
     :param catalog_file: name of catalog file in repo
     """
 
-    def __init__(self, path, remote, catalog_file='layers.json'):
-        self.directory = path
+    def __init__(self, directory, remote):
+        self.directory = directory
         try:
             self.repo = git.Repo(self.directory)
             self.update()
         except (git.exc.NoSuchPathError, git.exc.InvalidGitRepositoryError):
             self.repo = git.Repo.clone_from(remote, self.directory)
-        #: Repository catalog in dictionary format
-        self.catalog = load_catalog(os.path.join(self.directory, catalog_file))
 
     def __iter__(self):
-        for id, subdirectory in self.catalog.items():
-            yield Item(id, os.path.join(self.directory, subdirectory))
+        for root, dirs, files in os.walk(self.directory):
+            for f in fnmatch.filter(files, 'geoblacklight.json'):
+                yield Item(root)
 
     def update(self):
         """Perform ``git pull`` of repository."""
@@ -100,7 +98,3 @@ class Repository(object):
         """
 
         self.repo.index.commit(message)
-
-    def find(self, id):
-        """Find an :class:`~ogre.repository.Item` in the repository by id."""
-        return Item(id, self.catalog[id])

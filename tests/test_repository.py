@@ -24,18 +24,14 @@ class RepositoryTestCase(unittest.TestCase):
         shutil.rmtree(self.remote_temp)
         shutil.rmtree(self.local_temp)
 
-    def testCatalogReturnsDictionaryOfItems(self):
-        repo = Repository(self.local_temp, self.remote)
-        self.assertEqual(repo.catalog, {'foobar': 'foo/bar'})
-
     def testRepoReturnsItemsWhenIterated(self):
         repo = Repository(self.local_temp, self.remote)
         item = list(repo)[0]
-        self.assertEqual(item.id, 'foobar')
+        self.assertTrue(item.gbl_json.endswith('/foo/bar/geoblacklight.json'))
 
     def testItemHasFileProperties(self):
-        item = Item('fid', 'foo/bar/baz')
-        self.assertEqual(item.fgdc, 'foo/bar/baz/fgdc.xml')
+        item = Item('tests/fixtures/repo/foo/bar')
+        self.assertEqual(item.fgdc, 'tests/fixtures/repo/foo/bar/fgdc.xml')
 
     def testUpdatePullsChangesFromRemote(self):
         repo = Repository(self.local_temp, self.remote)
@@ -50,8 +46,3 @@ class RepositoryTestCase(unittest.TestCase):
             fp.write(u'foobar'.encode('utf-8'))
         repo.commit('Testing')
         self.assertEqual(repo.repo.commit().message, 'Testing')
-
-    def testFindReturnsItemById(self):
-        repo = Repository(self.local_temp, self.remote)
-        item = repo.find('foobar')
-        self.assertEqual(item.id, 'foobar')
