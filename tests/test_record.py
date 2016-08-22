@@ -4,32 +4,32 @@ import json
 
 import pytest
 
-from ogre.record import Record
 from ogre.exceptions import InvalidDataError
+from ogre.record import Record
 
 
-def testRecordInitializesFromData():
+def test_record_initializes_from_data():
     r = Record(dc_rights_s='Public')
     assert r.dc_rights_s == 'Public'
 
 
-def testEnumRaisesExceptionForUnknownValue():
+def test_enum_raises_exception_for_unknown_value():
     with pytest.raises(InvalidDataError):
         Record(dc_rights_s='Level 8')
 
 
-def testRecordHasOptionalFields():
+def test_record_has_optional_fields():
     r = Record()
     assert r.dc_creator_sm is None
 
 
-def testSolrGeomConstructsGeomString():
+def test_solr_geom_constructs_geom_string():
     r = Record()
     r.solr_geom = '-20.5', '20', '10.0', '-10'
     assert r.solr_geom == 'ENVELOPE(-20.5, 20, 10.0, -10)'
 
 
-def testSetFieldRemovesDuplicates():
+def test_set_field_removes_duplicates():
     r = Record(dc_creator_sm=['Bubbles', 'Bubbles'])
     assert r.dc_creator_sm == set(['Bubbles'])
 
