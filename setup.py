@@ -18,17 +18,25 @@ setup(
     author='Mike Graves',
     author_email='mgraves@mit.edu',
     packages=find_packages(exclude=('docs', 'tests')),
-    install_requires=['arrow', 'GitPython', 'six'],
+    install_requires=[
+        'arrow',
+        'click',
+        'GitPython',
+        'requests',
+    ],
+    entry_points={
+        'console_scripts': [
+            'ogre = ogre.cli:main'
+        ]
+    },
     classifiers=[
         'Development Status :: 3 - Alpha',
         'Intended Audience :: Developers',
         'Natural Language :: English',
         'License :: OSI Approved :: Apache Software License',
         'Programming Language :: Python :: 2',
-        'Programming Language :: Python :: 2.6',
         'Programming Language :: Python :: 2.7',
         'Programming Language :: Python :: 3',
-        'Programming Language :: Python :: 3.3',
-        'Programming Language :: Python :: 3.4',
+        'Programming Language :: Python :: 3.5',
     ]
 )
