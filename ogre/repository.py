@@ -73,13 +73,11 @@ class Repository(object):
     :param catalog_file: name of catalog file in repo
     """
 
-    def __init__(self, directory, remote):
+    def __init__(self, directory, update=True):
         self.directory = directory
-        try:
-            self.repo = git.Repo(self.directory)
+        self.repo = git.Repo(self.directory)
+        if update:
             self.update()
-        except (git.exc.NoSuchPathError, git.exc.InvalidGitRepositoryError):
-            self.repo = git.Repo.clone_from(remote, self.directory)
 
     def __iter__(self):
         for root, dirs, files in os.walk(self.directory):
@@ -89,12 +87,3 @@ class Repository(object):
     def update(self):
         """Perform ``git pull`` of repository."""
         self.repo.remotes.origin.pull()
-
-    def commit(self, message):
-        """
-        Perform ``git commit`` of repository.
-
-        :param message: commit message
-        """
-
-        self.repo.index.commit(message)
