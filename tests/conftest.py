@@ -19,13 +19,6 @@ def temp_dir():
 
 
 @pytest.yield_fixture
-def local():
-    tmp = tempfile.mkdtemp()
-    yield tmp
-    shutil.rmtree(tmp)
-
-
-@pytest.yield_fixture
 def remote():
     tmp = tempfile.mkdtemp()
     repo_dir = os.path.join(tmp, 'repo')
@@ -34,6 +27,14 @@ def remote():
     r.index.add('*')
     r.index.commit('Init')
     yield repo_dir
+    shutil.rmtree(tmp)
+
+
+@pytest.yield_fixture
+def repository(remote):
+    tmp = tempfile.mkdtemp()
+    git.Repo.clone_from(remote, tmp)
+    yield tmp
     shutil.rmtree(tmp)
 
 
