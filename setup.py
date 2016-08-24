@@ -22,6 +22,7 @@ setup(
         'arrow',
         'click',
         'GitPython',
+        'jsonschema',
         'requests',
     ],
     entry_points={

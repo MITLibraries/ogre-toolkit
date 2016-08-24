@@ -2,7 +2,15 @@
 from __future__ import absolute_import
 import json
 
+from jsonschema.validators import validator_for
+
 from ogre.fields import Enum, optional
+
+
+def create_validator(schema):
+    validator = validator_for(schema)
+    validator.check_schema(schema)
+    return validator(schema).validate
 
 
 class Record(object):
@@ -130,7 +138,7 @@ class Record(object):
         """W,E,N,S"""
         self._solr_geom = "ENVELOPE({}, {}, {}, {})".format(*values)
 
-    def to_json(self):
+    def as_dict(self):
         record = {
             'dc_creator_sm': list(self.dc_creator_sm or []),
             'dc_description_s': self.dc_description_s,
@@ -156,4 +164,7 @@ class Record(object):
             'layer_slug_s': self.layer_slug_s,
             'solr_geom': self.solr_geom,
         }
-        return json.dumps({k: v for k,v in record.items() if v})
+        return {k: v for k, v in record.items() if v}
+
+    def to_json(self):
+        return json.dumps(self.as_dict())

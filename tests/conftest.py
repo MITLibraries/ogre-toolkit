@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
 from __future__ import absolute_import
+import io
+import json
 import os.path
 import shutil
 import tempfile
@@ -36,6 +38,12 @@ def repository(remote):
     git.Repo.clone_from(remote, tmp)
     yield tmp
     shutil.rmtree(tmp)
+
+
+@pytest.fixture
+def json_schema():
+    with io.open(_fixture_path('geoblacklight-schema.json')) as fp:
+        return json.load(fp)
 
 
 def _fixture_path(path):
